@@ -1,5 +1,5 @@
 <template>
-    <div class="Container">
+    <div class="Container" v-if="playOn">
         <div class="Score">
             Your Score: {{ player }} : {{ computer }} Computer Score
         </div>
@@ -16,6 +16,10 @@
             <button @click="nextQues()" disabled="true" id="nextQ">Next Question</button>
         </div>
     </div>
+    <div class="FinalScore" v-if="playOff">
+        Your Final Score is {{ this.player }} against the Computers {{ this.computer }} <br>
+        <a href=""><button>Start Over</button></a>
+    </div>
 </template>
 
 <script>
@@ -29,7 +33,9 @@ export default{
             options:[],
             rightAns:[],
             counter:0,
-            called:false
+            called:false,
+            playOn:true,
+            playOff:false
         }
     },
     mounted(){
@@ -38,7 +44,7 @@ export default{
             for(var i=0;i<10;i++){
                 var s=data.data.results[i].question;
                 var replacedStr = s.replace(/&#039;/g, "'");
-                replacedStr = replacedStr.replace(/&quote;/g, "''");
+                replacedStr = replacedStr.replace(/&quot;/g, "''");
                 this.questions.push(replacedStr);
                 var opt=[];
                 opt.push(data.data.results[i].incorrect_answers[0]);
@@ -80,18 +86,25 @@ export default{
             document.getElementById('nextQ').style.backgroundColor="rgb(47, 161, 255)";
         },
         nextQues(){
-            this.counter++;
-            document.getElementById('nextQ').disabled = true;
-            document.getElementById('op1').disabled = false;
-            document.getElementById('op2').disabled = false;
-            document.getElementById('op3').disabled = false;
-            document.getElementById('op4').disabled = false;
+            if(this.counter!=10){
+                this.counter++;
+                document.getElementById('nextQ').disabled = true;
+                document.getElementById('op1').disabled = false;
+                document.getElementById('op2').disabled = false;
+                document.getElementById('op3').disabled = false;
+                document.getElementById('op4').disabled = false;
 
-            document.getElementById('op1').style.backgroundColor="rgb(47, 161, 255)";
-            document.getElementById('op2').style.backgroundColor="rgb(47, 161, 255)";
-            document.getElementById('op3').style.backgroundColor="rgb(47, 161, 255)";
-            document.getElementById('op4').style.backgroundColor="rgb(47, 161, 255)";
-            document.getElementById('nextQ').style.backgroundColor="rgb(95, 99, 102)";
+                document.getElementById('op1').style.backgroundColor="rgb(47, 161, 255)";
+                document.getElementById('op2').style.backgroundColor="rgb(47, 161, 255)";
+                document.getElementById('op3').style.backgroundColor="rgb(47, 161, 255)";
+                document.getElementById('op4').style.backgroundColor="rgb(47, 161, 255)";
+                document.getElementById('nextQ').style.backgroundColor="rgb(95, 99, 102)";
+            }
+            if(this.counter==10)
+            {
+                this.playOn=false;
+                this.playOff=true;
+            }
         }
     }
 }
@@ -127,5 +140,13 @@ button
 {
     margin-left: 10%;
     margin-right: 10%;
+}
+.FinalScore
+{
+    margin-left: 10%;
+    margin-right: 10%;
+    font-size: 150%;
+    text-align: center;
+    margin-top: 3%;
 }
 </style>
