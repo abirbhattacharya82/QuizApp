@@ -1,0 +1,3 @@
+<template>
+    Function Component
+</template>
