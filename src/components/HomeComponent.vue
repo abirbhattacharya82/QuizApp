@@ -1,7 +1,7 @@
 <template>
   <TitleComponent />
-  <!-- <FunctionComponent /> -->
-  <InstructionComponent v-if="show"/>
+  <FunctionComponent v-if="showQuiz" />
+  <InstructionComponent v-if="showIns"/>
   <div class="StartArea">
     <button @click="startQuiz()" id="startButton">Start</button>
   </div>
@@ -9,23 +9,25 @@
 
 <script>
 import TitleComponent from './TitleComponent.vue';
-// import FunctionComponent  from './FunctionComponent.vue';
+import FunctionComponent  from './FunctionComponent.vue';
 import InstructionComponent from './InstructionComponent.vue';
 export default{
   data(){
     return{
-      show:true
+      showIns:true,
+      showQuiz:false
     }
   },
   name:'HomeComponent',
   components:{
     TitleComponent,
-    // FunctionComponent,
+    FunctionComponent,
     InstructionComponent
   },
   methods:{
     startQuiz(){
-      this.show=false;
+      this.showIns=false;
+      this.showQuiz=true;
       document.getElementById('startButton').style.display="none";
     }
   }
